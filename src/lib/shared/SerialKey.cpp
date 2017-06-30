@@ -54,8 +54,7 @@ SerialKey::SerialKey(std::string serial) :
 		valid = true;
 	}
 	if (!valid) {
-		throw std::runtime_error ("Invalid \\
-			serial key is no more ;)");
+		throw std::runtime_error ("Invalid serial key is no more ;)");
 	}
 }
 
