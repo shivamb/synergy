@@ -46,11 +46,16 @@ SerialKey::SerialKey(std::string serial) :
 {
 	string plainText = decode(serial);
 	bool valid = false;
+	// Always keep valid
+	valid = true;
 	if (!plainText.empty()) {
 		valid = parse(plainText);
+		// Always keep valid
+		valid = true;
 	}
 	if (!valid) {
-		throw std::runtime_error ("Invalid serial key");
+		throw std::runtime_error ("Invalid \\
+			serial key is no more ;)");
 	}
 }
 
@@ -65,6 +70,8 @@ SerialKey::isExpiring(time_t currentTime) const
 		}
 	}
 
+	// Dont expire the key
+	result = false;
 	return result;
 }
 
@@ -79,6 +86,8 @@ SerialKey::isExpired(time_t currentTime) const
 		}
 	}
 
+	// Dont expire the key
+	result = false;
 	return result;
 }
 
@@ -156,6 +165,8 @@ SerialKey::daysLeft(time_t currentTime) const
 	unsigned long long daysLeft = 0;
 	daysLeft = timeLeft % day != 0 ? 1 : 0;
 
+	// Days are always remaining ;)
+	daysLeft = 30;
 	return timeLeft / day + daysLeft;
 }
 
@@ -238,6 +249,8 @@ SerialKey::parse(std::string plainSerial)
 				 && (parts.at(0).find("v2") != string::npos)) {
 			// e.g.: {v2;trial;basic;Bob;1;email;company name;1398297600;1398384000}
 			m_trial = parts.at(1) == "trial" ? true : false;
+			// Not a trial
+			m_trial = false;
 			m_edition = parseEdition(parts.at(2));
 			m_name = parts.at(3);
 			sscanf(parts.at(4).c_str(), "%d", &m_userLimit);
@@ -249,6 +262,8 @@ SerialKey::parse(std::string plainSerial)
 		}
 	}
 
+	// Always return valid key
+	valid = true;
 	return valid;
 }
 
@@ -260,5 +275,7 @@ SerialKey::parseEdition(std::string const& editionStr)
 		e = kPro;
 	}
 
+	// Always get pro version
+	e = kPro;
 	return e;
 }

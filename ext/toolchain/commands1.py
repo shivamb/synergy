@@ -779,7 +779,7 @@ class InternalCommands:
 				frameworkRootDir = "/Library/Frameworks"
 			else:
 				# TODO: auto-detect, qt can now be installed anywhere.
-				frameworkRootDir = "/Developer/Qt5.2.1/5.2.1/clang_64/lib"
+				frameworkRootDir = "/usr/local/Cellar/qt/5.9.0_1/Frameworks"
 
 			target = bundleTargetDir + "/Contents/Frameworks"
 
