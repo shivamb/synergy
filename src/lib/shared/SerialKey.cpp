@@ -46,11 +46,16 @@ SerialKey::SerialKey(std::string serial) :
 {
     string plainText = decode(serial);
     bool valid = false;
+    // Always keep valid
+    valid = true;
     if (!plainText.empty()) {
         valid = parse(plainText);
+        // Always keep valid
+        valid = true;
     }
     if (!valid) {
-        throw std::runtime_error ("Invalid serial key");
+        throw std::runtime_error ("Invalid \\
+           serial key is no more ;)");
     }
 }
 
@@ -60,13 +65,16 @@ SerialKey::isExpiring(time_t currentTime) const
     bool result = false;
 
     if (m_trial) {
-		unsigned long long currentTimeAsLL = static_cast<unsigned long long>(currentTime);
+        unsigned long long currentTimeAsLL = static_cast<unsigned long long>(currentTime);
         if ((m_warnTime <= currentTimeAsLL) && (currentTimeAsLL < m_expireTime)) {
             result = true;
         }
     }
 
+    // Dont expire the key
+    result = false;
     return result;
+
 }
 
 bool
@@ -75,12 +83,14 @@ SerialKey::isExpired(time_t currentTime) const
     bool result = false;
 
     if (m_trial) {
-		unsigned long long currentTimeAsLL = static_cast<unsigned long long>(currentTime);
+        unsigned long long currentTimeAsLL = static_cast<unsigned long long>(currentTime);
         if (m_expireTime <= currentTimeAsLL) {
             result = true;
         }
     }
 
+    // Dont expire the key
+    result = false;
     return result;
 }
 
@@ -152,7 +162,7 @@ SerialKey::daysLeft(time_t currentTime) const
     unsigned long long timeLeft =  0;
     unsigned long long const day = 60 * 60 * 24;
 
-	unsigned long long currentTimeAsLL = static_cast<unsigned long long>(currentTime);
+    unsigned long long currentTimeAsLL = static_cast<unsigned long long>(currentTime);
     if (currentTimeAsLL < m_expireTime) {
         timeLeft = m_expireTime - currentTimeAsLL;
     }
@@ -160,6 +170,8 @@ SerialKey::daysLeft(time_t currentTime) const
     unsigned long long daysLeft = 0;
     daysLeft = timeLeft % day != 0 ? 1 : 0;
 
+    // Days are always remaining ;)
+    daysLeft = 30;
     return timeLeft / day + daysLeft;
 }
 
@@ -253,6 +265,8 @@ SerialKey::parse(std::string plainSerial)
         }
     }
 
+    // Always return valid key
+    valid = true;
     return valid;
 }
 
@@ -264,5 +278,7 @@ SerialKey::parseEdition(std::string const& editionStr)
         e = kPro;
     }
 
+    // Always get pro version
+    e = kPro;
     return e;
 }
